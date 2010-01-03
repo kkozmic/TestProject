@@ -14,8 +14,7 @@ void Application_Start(object sender, EventArgs e)
     }, source);
 
     // uncomment the following line if you wish ActiveRecord to create your database schema
-    
-    ActiveRecordStarter.CreateSchema();
+    //ActiveRecordStarter.CreateSchema();
 
     HttpContext.Current.Response.Redirect(@"~\Home\Default");
 }

@@ -22,10 +22,10 @@
 		[Property]
 		public string ApplicationVersion { get; set; }
 
-		[Property(ColumnType = "string")]
-		public Uri Website { get; set; }
+		[Property]
+		public string Website { get; set; }
 
-		[Property(ColumnType = "StringClob")]
+		[Property(Length = 5000)]
 		public string Description { get; set; }
 
 		[HasMany(Inverse = true, Cascade = ManyRelationCascadeEnum.AllDeleteOrphan)]

@@ -1,1 +1,8 @@
-﻿Hello World!
+﻿<p>Benchmarks:</p>
+<ul>
+<%
+for benchmark in benchmarks:
+	output "<li>${benchmark.ApplicationName}</li>"
+end;
+%>
+</ul>
