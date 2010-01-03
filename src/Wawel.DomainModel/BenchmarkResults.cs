@@ -9,7 +9,7 @@ namespace Wawel.DomainModel
 	{
 		private Guid id;
 
-		[PrimaryKey(Access = PropertyAccess.NosetterCamelcase)]
+		[PrimaryKey(Access = PropertyAccess.NosetterCamelcase, Generator = PrimaryKeyType.GuidComb)]
 		public Guid Id
 		{
 			get { return id; }

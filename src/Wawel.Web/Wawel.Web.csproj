@@ -65,6 +65,12 @@
   <ItemGroup>
     <Content Include="Global.asax" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Wawel.DomainModel\Wawel.DomainModel.csproj">
+      <Project>{D2ABE401-6BC0-45C7-A0C9-73B0BECFA85B}</Project>
+      <Name>Wawel.DomainModel</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
