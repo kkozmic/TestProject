@@ -35,6 +35,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Castle.ActiveRecord.dll</HintPath>
     </Reference>
+    <Reference Include="Castle.Components.Pagination, Version=1.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Castle.Components.Pagination.dll</HintPath>
+    </Reference>
     <Reference Include="Castle.MonoRail.Framework, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Castle.MonoRail.Framework.dll</HintPath>
@@ -62,12 +66,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Views\Admin\Benchmarks.brail" />
+    <None Include="Views\Admin\Users.brail" />
+    <None Include="Views\CommonScripts\PaginationFooter.brail" />
     <None Include="Views\Home\Default.brail">
     </None>
+    <None Include="Views\Layouts\Admin.brail" />
+    <None Include="Views\Layouts\Default.brail" />
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

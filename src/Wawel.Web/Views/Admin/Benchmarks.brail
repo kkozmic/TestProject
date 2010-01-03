@@ -1,0 +1,31 @@
+<p>Benchmarks:</p>
+<table border="1" width="70%">
+	<tr>
+			<td>
+				<B>Id</B>
+			</td>
+			<td>
+				<B>Name</B>
+			</td>
+			<td>
+				<B>Version</B></td>
+	</tr>
+  <%
+	for benchmark in benchmarks:
+  %>
+  <tr>
+		<td>
+        ${benchmark.Id}
+      </td>
+      <td>
+        ${benchmark.ApplicationName}
+      </td>
+			<td>
+        ${benchmark.ApplicationVersion}
+      </td>
+	</tr>
+<%
+	end
+%>
+</table>
+${PaginationFooter(benchmarks, PaginationHelper)}

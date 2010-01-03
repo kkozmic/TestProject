@@ -1,0 +1,35 @@
+import System.Text
+import Castle.MonoRail.Framework.Helpers 
+import Castle.Components.Pagination
+
+def PaginationFooter(page as IPaginatedPage, pagingHelper as PaginationHelper):
+	output = StringBuilder()
+	output.Append("""<p>Pagination Data:</p> <div class="pagination"> <table width="70%" >
+		<tr>   <td>Showing Users: ${page.FirstItemIndex} - ${page.LastItemIndex} of ${page.TotalItems}</td>
+	<td>""") 
+      if page.CurrentPageIndex != 1:
+            output.Append( pagingHelper.CreatePageLink( 1, "first" ) )
+      else:
+            output.Append( "first" )
+      end
+      output.Append("  </td>  <td> ")
+      if page.HasPreviousPage:
+            output.Append( pagingHelper.CreatePageLink( page.PreviousPageIndex, "prev" ) )
+      else:
+            output.Append( "prev" )
+      end
+      output.Append(" </td> <td> ")
+      if page.HasNextPage:
+            output.Append( pagingHelper.CreatePageLink( page.NextPageIndex, "next" ) )
+      else:
+            output.Append( "next" )
+      end
+      output.Append(" </td>  <td> ")
+      if page.CurrentPageIndex != page.TotalPages:
+            output.Append( pagingHelper.CreatePageLink( page.TotalPages, "last" ) )
+      else:
+            output.Append( "last" )
+      end
+      output.Append("""  </td>  </tr> </table>  </div>""")
+      return output.ToString()
+end 

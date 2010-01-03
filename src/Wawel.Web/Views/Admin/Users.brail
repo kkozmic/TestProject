@@ -1,0 +1,32 @@
+<p>Our Users:</p>
+<table border="1" width="70%>
+	<tr>
+		<td>
+			<b>ID</b>
+		</td>
+		<td>
+			<b>Name</b>
+		</td>
+		<td>
+			<b>Email</b>
+		</td>
+	</tr>
+	<%
+	for user in users:
+	%>
+	<tr>
+		<td>
+			${user.Id}
+		</td>
+		<td>
+			${user.Name}
+		</td>
+		<td>
+			${user.Email}
+		</td>
+	</tr>
+	<%
+	end
+	%>
+</table>
+${PaginationFooter(users, PaginationHelper)}
