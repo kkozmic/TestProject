@@ -1,8 +1,8 @@
 <p>Our Users:</p>
-<table border="1" width="70%>
+<table border="1" width="70%">
 	<tr>
 		<td>
-			<b>ID</b>
+			<b>Id</b>
 		</td>
 		<td>
 			<b>Name</b>
@@ -11,10 +11,10 @@
 			<b>Email</b>
 		</td>
 	</tr>
-	<%
+  <?brail
 	for user in users:
-	%>
-	<tr>
+  ?>
+    <tr>
 		<td>
 			${user.Id}
 		</td>
@@ -24,9 +24,14 @@
 		<td>
 			${user.Email}
 		</td>
+    <td>
+      <?brail
+	     output UrlHelper.LinkTo("Edit","admin","EditUser",user.Id)
+      ?>
+    </td>
 	</tr>
-	<%
+<?brail
 	end
-	%>
+?>
 </table>
 ${PaginationFooter(users, PaginationHelper)}

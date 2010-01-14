@@ -10,9 +10,9 @@
 			<td>
 				<B>Version</B></td>
 	</tr>
-  <%
+  <?brail
 	for benchmark in benchmarks:
-  %>
+  ?>
   <tr>
 		<td>
         ${benchmark.Id}
@@ -23,9 +23,14 @@
 			<td>
         ${benchmark.ApplicationVersion}
       </td>
+    <td>
+      <?brail
+	     output HtmlHelper.LinkTo("Edit","admin","EditBenchmark",benchmark.Id)
+        ?>
+      </td>
 	</tr>
-<%
+<?brail
 	end
-%>
+?>
 </table>
 ${PaginationFooter(benchmarks, PaginationHelper)}

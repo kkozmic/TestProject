@@ -5,7 +5,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wawel.DomainModel", "src\Wa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wawel.DomainModel.Tests", "tst\Wawel.DomainModel.Tests\Wawel.DomainModel.Tests.csproj", "{4B07FE15-15C5-4722-A3ED-3156A9E789C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wawel.Web", "src\Wawel.Web\Wawel.Web.csproj", "{29AA0EEE-D2C5-4A14-8C84-1C9B0D112246}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{51812B4D-9927-47E9-93A4-5FB9FEC6C78F}"
+	ProjectSection(SolutionItems) = preProject
+		sql\Wawel.mdf = sql\Wawel.mdf
+		sql\Wawel_log.LDF = sql\Wawel_log.LDF
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +25,6 @@ Global
 		{4B07FE15-15C5-4722-A3ED-3156A9E789C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B07FE15-15C5-4722-A3ED-3156A9E789C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B07FE15-15C5-4722-A3ED-3156A9E789C8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{29AA0EEE-D2C5-4A14-8C84-1C9B0D112246}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{29AA0EEE-D2C5-4A14-8C84-1C9B0D112246}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{29AA0EEE-D2C5-4A14-8C84-1C9B0D112246}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{29AA0EEE-D2C5-4A14-8C84-1C9B0D112246}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
