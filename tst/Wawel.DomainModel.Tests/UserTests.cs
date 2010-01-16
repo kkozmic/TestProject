@@ -43,6 +43,31 @@
 		}
 
 		[Fact]
+		public void Can_perform_benchmark_runs()
+		{
+			var stefan = new User
+			{
+				Email = "stefan@gmail.com",
+				Name = "Stefan",
+				Password = "Super compilcated password!",
+				About = "Stefan is a very cool."
+			};
+
+			var result = stefan.RunBenchmark("Foo bar!", "AyeMack Pro", 3.2);
+			Assert.NotNull(result);
+			Assert.Equal("Foo bar!", result.BenmchmarkName);
+			Assert.Equal("AyeMack Pro", result.ComputerModel);
+			Assert.Equal(3.2, result.Score);
+			Assert.Equal(stefan, result.User);
+
+			stefan.Save();
+
+			var user = User.FindAll().Single();
+			Assert.NotEmpty(user.BenchmarkResults);
+			Assert.Equal(1, user.BenchmarkResults.Count());
+		}
+
+		[Fact]
 		public void Valid_user_can_login()
 		{
 			var stefan = new User
