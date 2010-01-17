@@ -2,7 +2,6 @@ namespace Wawel.DomainModel
 {
 	using System;
 	using System.Collections.Generic;
-	using System.Linq;
 	using System.Security.Cryptography;
 	using System.Text;
 
@@ -14,7 +13,7 @@ namespace Wawel.DomainModel
 	[ActiveRecord]
 	public class User : ActiveRecordLinqBase<User>
 	{
-		private readonly ICollection<BenchmarkResult> benchmarkResults = new List<BenchmarkResult>();
+		private readonly ICollection<BenchmarkResult> benchmarkResults = new HashSet<BenchmarkResult>();
 
 		private string password;
 
@@ -39,14 +38,20 @@ namespace Wawel.DomainModel
 		public string About { get; set; }
 
 
-		[HasMany(Access = PropertyAccess.FieldCamelcase, 
-			Cascade = ManyRelationCascadeEnum.SaveUpdate, 
-			RelationType = RelationType.Set,
-			Inverse = true)]
-		public IEnumerable<BenchmarkResult> BenchmarkResults
+	[HasMany(Access = PropertyAccess.FieldCamelcase, 
+		Cascade = ManyRelationCascadeEnum.SaveUpdate, 
+		RelationType = RelationType.Set,
+		Inverse = true)]
+	public IEnumerable<BenchmarkResult> BenchmarkResults
+	{
+		get
 		{
-			get { return benchmarkResults.Select(r => r); }
+			foreach (var result in benchmarkResults)
+			{
+				yield return result;
+			}
 		}
+	}
 
 		private string Hash(string value)
 		{

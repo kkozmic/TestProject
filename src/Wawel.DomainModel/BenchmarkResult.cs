@@ -5,38 +5,39 @@ namespace Wawel.DomainModel
 	using Castle.ActiveRecord;
 	using Castle.ActiveRecord.Linq;
 
-	[ActiveRecord]
-	public class BenchmarkResult : ActiveRecordLinqBase<BenchmarkResult>
+[ActiveRecord]
+public class BenchmarkResult : ActiveRecordLinqBase<BenchmarkResult>
+{
+	protected BenchmarkResult()
 	{
-		protected BenchmarkResult()
+	}
+
+	public BenchmarkResult(User user, string benmchmarkName, string computerModel, double score)
+	{
+		if (user == null)
 		{
+			throw new ArgumentNullException("user");
+		}
+		if (benmchmarkName == null)
+		{
+			throw new ArgumentNullException("benmchmarkName");
+		}
+		if (computerModel == null)
+		{
+			throw new ArgumentNullException("computerModel");
 		}
 
-		public BenchmarkResult(User user, string benmchmarkName, string computerModel, double score)
-		{
-			if (user == null)
-			{
-				throw new ArgumentNullException("user");
-			}
-			if (benmchmarkName == null)
-			{
-				throw new ArgumentNullException("benmchmarkName");
-			}
-			if (computerModel == null)
-			{
-				throw new ArgumentNullException("computerModel");
-			}
+		User = user;
+		BenmchmarkName = benmchmarkName;
+		ComputerModel = computerModel;
+		Score = score;
+	}
 
-			User = user;
-			BenmchmarkName = benmchmarkName;
-			ComputerModel = computerModel;
-			Score = score;
-		}
 
 		[PrimaryKey]
 		public Guid Id { get; private set; }
 
-		[BelongsTo(Column = "`User`")]
+		[BelongsTo]
 		public User User { get; private set; }
 
 		[Property]
