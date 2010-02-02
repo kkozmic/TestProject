@@ -1,137 +1,92 @@
 ﻿namespace Wawel.DomainModel.Tests
 {
 	using System;
+	using System.Collections.Generic;
 	using System.Linq;
-
-	using Castle.ActiveRecord;
-	using Castle.ActiveRecord.Framework;
 
 	using HibernatingRhinos.Profiler.Appender.NHibernate;
 
+	using NHibernate;
+	using NHibernate.ByteCode.Castle;
+	using NHibernate.Cfg;
+	using NHibernate.Connection;
+	using NHibernate.Dialect;
+	using NHibernate.Driver;
 	using NHibernate.Tool.hbm2ddl;
 
 	using Xunit;
 
-	public class UserTests:IDisposable
+	using Environment = NHibernate.Cfg.Environment;
+
+	public class UserTests : IDisposable
 	{
-		private ISessionFactoryHolder sessionFactoryHolder;
+		private ISessionFactory factory;
+		private SchemaExport schemaExport;
 
 		public UserTests()
 		{
-
 			NHibernateProfiler.Initialize();
-			ActiveRecordStarter.SessionFactoryHolderCreated += SaveHolder;
-			ActiveRecordStarter.Initialize();
-
-			// registers all active record types from the assembly
-			ActiveRecordStarter.RegisterAssemblies(typeof(User).Assembly);
-
-			// performs initialization using information from appdomain config file
-			// generates database schema
-			SetAutoQuoteIdentifiers();
-			ActiveRecordStarter.UpdateSchema();
-		}
-
-		private void SaveHolder(ISessionFactoryHolder holder)
-		{
-			sessionFactoryHolder = holder;
-		}
-
-		private void SetAutoQuoteIdentifiers()
-		{
-			var configurations = sessionFactoryHolder.GetAllConfigurations();
-			foreach (var configuration in configurations)
-			{
-				SchemaMetadataUpdater.QuoteTableAndColumns(configuration);
-			}
-		}
-
-		[Fact]
-		public void Can_save_and_read_User()
-		{
-			var stefan = new User
-			{
-				Email = "stefan@gmail.com",
-				Name = "Stefan",
-				Password = "Super compilcated password!",
-				About = "Stefan is a very cool."
-			};
-
-			stefan.Save();
-			var users = User.Queryable
-				.Where(u => u.Name.StartsWith("S"))
-				.ToList();
-			Assert.NotEmpty(users);
-			Assert.Equal("Stefan", users.Single().Name);
-		}
-
-		[Fact]
-		public void Can_perform_benchmark_runs()
-		{
-			var stefan = new User
-			{
-				Email = "stefan@gmail.com",
-				Name = "Stefan",
-				Password = "Super compilcated password!",
-				About = "Stefan is a very cool."
-			};
-			stefan.RunBenchmark("Foo bar!", "AyeMack Pro", 3.2);
-			stefan.Save();
-
-			var user = User.FindAll().Single();
-
-			Assert.NotEmpty(user.BenchmarkResults);
-			Assert.Equal(1, user.BenchmarkResults.Count());
-
-			var result = user.BenchmarkResults.Single();
-
-			Assert.NotNull(result);
-			Assert.Equal("Foo bar!", result.BenmchmarkName);
-			Assert.Equal("AyeMack Pro", result.ComputerModel);
-			Assert.Equal(3.2, result.Score);
-		}
-
-		[Fact]
-		public void Valid_user_can_login()
-		{
-			var stefan = new User
-			{
-				Email = "stefan@gmail.com",
-				Name = "Stefan",
-				Password = "Super compilcated password!",
-				About = "Stefan is a very cool."
-			};
-
-			stefan.Save();
-
-			var user = User.Login("Stefan","Super compilcated password!");
-			Assert.NotNull(user);
-		}
-
-		[Fact]
-		public void Invalid_user_can_not_login()
-		{
-			var stefan = new User
-			{
-				Email = "stefan@gmail.com",
-				Name = "Stefan",
-				Password = "Super compilcated password!",
-				About = "Stefan is a very cool."
-			};
-
-			stefan.Save();
-
-			var user = User.Login("Stefan", "oups, that's not it...");
-			Assert.Null(user);
+			InitNH();
 		}
 
 		public void Dispose()
 		{
 			NHibernateProfiler.Stop();
-			ActiveRecordStarter.DropSchema();
-
+			schemaExport.Drop(true, true);
 			// this is only for tests
-			ActiveRecordStarter.ResetInitializationFlag();
+		}
+
+		[Fact]
+		public void Can_perform_benchmark_runs_NH()
+		{
+			var stefan = new User();
+			stefan.AddResult();
+			User user;
+			BenchmarkResult result;
+			using (var session = factory.OpenSession())
+			using (var tx = session.BeginTransaction())
+			{
+				session.Save(stefan);
+				tx.Commit();
+			}
+			using(var session = factory.OpenSession())
+			using (var tx = session.BeginTransaction())
+			{
+				user = session.CreateCriteria<User>().List<User>().Single();
+				tx.Commit();
+			}
+			using(var session = factory.OpenSession())
+			using (var tx = session.BeginTransaction())
+			{
+				result = session.CreateCriteria<BenchmarkResult>().List<BenchmarkResult>().Single();
+				tx.Commit();
+			}
+
+
+			Assert.NotEmpty(user.BenchmarkResults);
+			Assert.Equal(1, user.BenchmarkResults.Count());
+
+			Assert.NotNull(result);
+		}
+
+		private void InitNH()
+		{
+			var configuration = new Configuration()
+				.AddProperties(new Dictionary<string, string>
+				{
+					{ Environment.ConnectionDriver, typeof(SqlClientDriver).FullName },
+					{ Environment.Dialect, typeof(MsSql2005Dialect).FullName },
+					{ Environment.ConnectionProvider, typeof(DriverConnectionProvider).FullName },
+					{ Environment.ConnectionStringName, "Wawel" },
+					{ Environment.ProxyFactoryFactoryClass, typeof(ProxyFactoryFactory).AssemblyQualifiedName },
+					{ "hbm2ddl.keywords", "auto-quote" },
+				});
+
+			configuration.AddAssembly(typeof(User).Assembly);
+			SchemaMetadataUpdater.QuoteTableAndColumns(configuration);
+			new SchemaUpdate(configuration).Execute(true, true);
+			schemaExport = new SchemaExport(configuration);
+			factory = configuration.BuildSessionFactory();
 		}
 	}
 }

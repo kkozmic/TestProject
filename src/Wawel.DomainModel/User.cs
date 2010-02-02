@@ -5,13 +5,9 @@ namespace Wawel.DomainModel
 	using System.Security.Cryptography;
 	using System.Text;
 
-	using Castle.ActiveRecord;
-	using Castle.ActiveRecord.Linq;
-
 	using NHibernate.Criterion;
 
-	[ActiveRecord]
-	public class User : ActiveRecordLinqBase<User>
+	public class User
 	{
 		private readonly ICollection<BenchmarkResult> benchmarkResults = new HashSet<BenchmarkResult>();
 
@@ -19,29 +15,12 @@ namespace Wawel.DomainModel
 
 		private Guid id;
 
-		[PrimaryKey(Access = PropertyAccess.NosetterCamelcase)]
 		public Guid Id
 		{
 			get { return id; }
 		}
 
-		[Property(Unique = true, NotNull = true)]
-		public string Name { get; set; }
 
-		[Property]
-		public string Email { get; set; }
-
-		[Property(Access = PropertyAccess.FieldCamelcase, NotNull = true)]
-		public string Password { set { password = Hash(value); } }
-
-		[Property(Length = 10000)]
-		public string About { get; set; }
-
-
-	[HasMany(Access = PropertyAccess.FieldCamelcase, 
-		Cascade = ManyRelationCascadeEnum.SaveUpdate, 
-		RelationType = RelationType.Set,
-		Inverse = true)]
 	public IEnumerable<BenchmarkResult> BenchmarkResults
 	{
 		get
@@ -53,25 +32,11 @@ namespace Wawel.DomainModel
 		}
 	}
 
-		private string Hash(string value)
+		public BenchmarkResult AddResult()
 		{
-			var sha1 = SHA1.Create();
-			var bytes = Encoding.Unicode.GetBytes(value);
-			var hash = sha1.ComputeHash(bytes);
-			return Encoding.Unicode.GetString(hash);
-		}
-
-		public BenchmarkResult RunBenchmark(string benchmarkName, string computerModel, double score)
-		{
-			var result = new BenchmarkResult(this, benchmarkName, computerModel, score);
+			var result = new BenchmarkResult(this);
 			benchmarkResults.Add(result);
 			return result;
-		}
-
-		public static User Login(string username, string password)
-		{
-			var user = new User { Name = username, Password = password };
-			return User.FindOne(Example.Create(user).ExcludeNulls());
 		}
 	}
 }

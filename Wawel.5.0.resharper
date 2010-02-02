@@ -1,0 +1,18 @@
+<Configuration>
+  <SharedSolutionTemplateManager>
+    <FileTemplates>
+      <Template uid="660fb4c3-da81-4655-9d00-8883e02e7132" shortcut="" description="Brail View" text="" reformat="False" shortenQualifiedReferences="False">
+        <Context>
+          <ProjectLanguageContext language="All" />
+        </Context>
+        <Categories />
+        <Variables />
+        <CustomProperties>
+          <Property key="FileName" value="View" />
+          <Property key="Extension" value="brail" />
+          <Property key="ValidateFileName" value="False" />
+        </CustomProperties>
+      </Template>
+    </FileTemplates>
+  </SharedSolutionTemplateManager>
+</Configuration>
